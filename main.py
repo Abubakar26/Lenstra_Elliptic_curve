@@ -41,32 +41,22 @@ def point_on_EC(a, b, x, y, n) -> bool:
     return False
 
 
-# def Ec_Point_generator(a, n, r_bound) -> list:
-#     range = np.arange(4, r_bound)
-#     x_range = range
-#     y_range = range
-#     points_on_EC = []
-#     for x in x_range:
-#         for y in y_range:
-#             b = weierstrass_B(a, x, y, n)
-#             if (EC_singulaity_check(a, b, n)):
-#                 if point_on_EC(a, b, x, y, n):
-#                     points_on_EC.append([x, y])
-#
-#     return points_on_EC
-
-def Ec_Point_generator(a, n, r_bound) -> list:
+def Ec_Point_generator(a, n, l_bound, r_bound) -> list:
     range = np.arange(2, r_bound)
     x_range = range
     y_range = range
     points_on_EC = []
-    for x in x_range:
-        for y in y_range:
-            # b = weierstrass_B(a, x, y, n)
-            if (EC_singulaity_check(a, 3, n)):
-                if point_on_EC(a, 3, x, y, n):
-                    points_on_EC.append([x, y])
+    x=random.randint(l_bound, r_bound)
+    y=random.randint(l_bound,r_bound)
+    b = weierstrass_B(a, x, y, n)
+    print("y=",y,"x=",x,"a=",a,"b=",b)
+    if (EC_singulaity_check(a, b, n)):
+        for x_1 in x_range:
+            for y_1 in y_range:
+                if point_on_EC(a, b, x_1, y_1, n):
+                   points_on_EC.append([x_1, y_1])
     return points_on_EC
+
 
 def k_generator() -> int:
     k = random.randint(45321, 893483274)
@@ -86,13 +76,13 @@ def lenstras_factorization(k, n, points) -> int:
 
 if __name__ == '__main__':
 
-    composite_integer = 375
+    composite_integer = 1000
     A = random.randint(1000, 10000)
     print(A)
     start = timeit.default_timer()
     bound = hasse_weil_bound(composite_integer)
     l_bound, r_bound = bound
-    points_list = Ec_Point_generator(A,composite_integer,r_bound)
+    points_list = Ec_Point_generator(A,composite_integer,l_bound,r_bound)
     k = k_generator()
     factors= lenstras_factorization(k, composite_integer, points_list)
     stop = timeit.default_timer()
@@ -100,3 +90,8 @@ if __name__ == '__main__':
     print((points_list))
     print(factors)
     print('time elapsed', stop-start)
+
+
+
+
+

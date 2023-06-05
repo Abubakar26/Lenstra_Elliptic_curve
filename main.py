@@ -4,6 +4,8 @@ import numpy as np
 import sympy as sm
 from gmpy2 import f_mod
 import timeit
+from sage import *
+from sympy.ntheory import ecm
 
 
 def hasse_weil_bound(n: int) -> int:
@@ -15,6 +17,7 @@ def hasse_weil_bound(n: int) -> int:
 
 
 def weierstrass_B(a,x,y,n) -> int:
+
     b = ((y*y)-(x*x*x)-(a*x))
     b = (b % n)
     return b
@@ -32,26 +35,38 @@ def EC_singulaity_check(A, B, n) -> bool:
 def point_on_EC(a, b, x, y, n) -> bool:
     # confirmation of
     weierstrass_eq = ((x * x * x) + (a * x) + b)
-    Ec_result = math.gcd(weierstrass_eq, n)
+    Ec_result = (weierstrass_eq % n)
     if (y * y) == Ec_result:
         return True
     return False
 
 
+# def Ec_Point_generator(a, n, r_bound) -> list:
+#     range = np.arange(4, r_bound)
+#     x_range = range
+#     y_range = range
+#     points_on_EC = []
+#     for x in x_range:
+#         for y in y_range:
+#             b = weierstrass_B(a, x, y, n)
+#             if (EC_singulaity_check(a, b, n)):
+#                 if point_on_EC(a, b, x, y, n):
+#                     points_on_EC.append([x, y])
+#
+#     return points_on_EC
+
 def Ec_Point_generator(a, n, r_bound) -> list:
-    range = np.arange(1, r_bound)
+    range = np.arange(2, r_bound)
     x_range = range
     y_range = range
     points_on_EC = []
-    for i in x_range:
-        for j in y_range:
-            b = weierstrass_B(a, i, j, n)
-            if point_on_EC(a, b, i, j, n):
-                if (EC_singulaity_check(a, b, n)):
-                    points_on_EC.append([i, j])
-                continue
+    for x in x_range:
+        for y in y_range:
+            # b = weierstrass_B(a, x, y, n)
+            if (EC_singulaity_check(a, 3, n)):
+                if point_on_EC(a, 3, x, y, n):
+                    points_on_EC.append([x, y])
     return points_on_EC
-
 
 def k_generator() -> int:
     k = random.randint(45321, 893483274)
@@ -71,8 +86,8 @@ def lenstras_factorization(k, n, points) -> int:
 
 if __name__ == '__main__':
 
-    composite_integer =9000
-    A =random.randint(100,composite_integer)
+    composite_integer = 375
+    A = random.randint(1000, 10000)
     print(A)
     start = timeit.default_timer()
     bound = hasse_weil_bound(composite_integer)
@@ -85,4 +100,3 @@ if __name__ == '__main__':
     print((points_list))
     print(factors)
     print('time elapsed', stop-start)
-

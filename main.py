@@ -1,17 +1,16 @@
 import math
 import random
 import numpy as np
-import sympy as sm
-from gmpy2 import f_mod
 import timeit
-from sage import *
-from sympy.ntheory import ecm
-
-
+def num_check(n)-> bool:
+    if(((n%2)>=1) and ((n%3) >=1)):
+       return True
+    else:
+        return False
 def hasse_weil_bound(n: int) -> int:
     # Estimate the number of points on the elliptic curve
-    right_bound = n + 1 + math.floor(2*(math.sqrt(n)))
-    left_bound = n + 1 - math.floor(2*(math.sqrt(n)))
+    right_bound = (n + 1) + math.floor(2*(math.sqrt(n)))
+    left_bound = (n + 1) - math.floor(2*(math.sqrt(n)))
     return [left_bound, right_bound]
     # return "Give prime number"
 
@@ -26,9 +25,12 @@ def EC_singulaity_check(A, B, n) -> bool:
     # check condition whether the curve is singular or not if singular then it is discarded
     singular = (4*(A * A * A) + 27*(B * B))
     calc_gcd = math.gcd(singular, n)
-    if(calc_gcd != 0):
+    if(calc_gcd !=0):
+        print('curve is non-singular')
+    if(calc_gcd >= 1 and calc_gcd <=n):
           return True
-    else:
+    elif(calc_gcd == n):
+      print("Choose new B for the curve")
       return False
 
 
@@ -76,20 +78,24 @@ def lenstras_factorization(k, n, points) -> int:
 
 if __name__ == '__main__':
 
-    composite_integer = 1000
-    A = random.randint(1000, 10000)
-    print(A)
-    start = timeit.default_timer()
-    bound = hasse_weil_bound(composite_integer)
-    l_bound, r_bound = bound
-    points_list = Ec_Point_generator(A,composite_integer,l_bound,r_bound)
-    k = k_generator()
-    factors= lenstras_factorization(k, composite_integer, points_list)
-    stop = timeit.default_timer()
-    (print(l_bound, '<= E(F_P)<=', r_bound))
-    print((points_list))
-    print(factors)
-    print('time elapsed', stop-start)
+    composite_integer = 73
+    condition_check=num_check(composite_integer)
+    if(condition_check):
+        A = random.randint(1000, 10000)
+        print(A)
+        start = timeit.default_timer()
+        bound = hasse_weil_bound(composite_integer)
+        l_bound, r_bound = bound
+        points_list = Ec_Point_generator(A,composite_integer,l_bound,r_bound)
+        k = k_generator()
+        factors= lenstras_factorization(k, composite_integer, points_list)
+        stop = timeit.default_timer()
+        (print(l_bound, '<= E(F_P)<=', r_bound))
+        print(len(points_list))
+        print(factors)
+        print('time elapsed', stop-start)
+    else:
+        print("composite integer is fully divided by the 2 or 3")
 
 
 

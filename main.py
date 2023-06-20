@@ -64,7 +64,7 @@ def Ec_Point_generator(a:int, n:int, l_bound:int, r_bound:int) -> list:
 
 
 def k_generator() -> int:
-    k = random.randint(500, 10000)
+    k = random.randint(50000, 100000)
     return k
 
 
@@ -84,6 +84,8 @@ def lambda_calculate_for_Ypoints(a:int, P:tuple, Q:tuple) -> int:
 
 def divisor_using_addition(a:int, n:int, P:tuple, Q:tuple):
     x_p, y_p = P
+    print(P)
+    print(Q)
     x_q, y_q = Q
     if P is True and Q is not True:
         print("Q is point at infinity So P points are returned")
@@ -111,9 +113,11 @@ def divisor_using_addition(a:int, n:int, P:tuple, Q:tuple):
         d = math.gcd((y_p + y_q), n)
         if(1 < d < n):
             print("We find the divisor")
+            print(d)
             return d
         elif d == n:
             print("Y_P == -Y_Q Then R= Point at infinity")
+            return 0
         elif d == 1:
             print("Found third point on the Curve")
             lambdaa = lambda_calculate_for_Ypoints(a, P, Q)
@@ -138,7 +142,10 @@ def divisor_using_multiplication(a,k:int, n:int, point:list):
            pass
        else:
             R = divisor_using_addition(a, n, kp, kp)
+            if isinstance(R, int):
+                return R
             kp = R
+
 # def lenstras_factorization(k, n, points) -> int:
 #     factors_list=[]
 #     for point in points:
@@ -151,7 +158,7 @@ def divisor_using_multiplication(a,k:int, n:int, point:list):
 
 if __name__ == '__main__':
 
-    prime_num = 91
+    prime_num = 119
     condition_check = num_check(prime_num)
     if (condition_check):
         A = random.randint(10, 100)

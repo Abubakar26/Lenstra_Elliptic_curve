@@ -5,7 +5,7 @@ import timeit
 
 
 def num_check(n:int) -> bool:
-    if (((n % 2) >= 1) and ((n % 3) >= 1)):
+    if ((n % 2) >= 1) and ((n % 3) >= 1):
         return True
     else:
         return False
@@ -30,11 +30,7 @@ def EC_singulaity_check(A:int, B:int, n:int) -> bool:
     calc_mod = (singular% n)
     if calc_mod != 0:
         print('curve is non-singular')
-    if calc_mod >= 1 and calc_mod <= n:
         return True
-    elif calc_mod == n:
-        print("Choose new B for the curve")
-        return False
 
 
 def point_on_EC(a:int, b:int, x:tuple, y:tuple, n:int) -> bool:
@@ -82,7 +78,7 @@ def lambda_calculate_for_Ypoints(a:int, P:tuple, Q:tuple) -> int:
     return lambdaa
 
 
-def divisor_using_addition(a:int, n:int, P:tuple, Q:tuple):
+def divisor_using_addition(a:int, n:int, P:tuple, Q:tuple) -> int or tuple:
     x_p, y_p = P
     print(P)
     print(Q)
@@ -158,23 +154,26 @@ def divisor_using_multiplication(a,k:int, n:int, point:list):
 
 if __name__ == '__main__':
 
-    prime_num = 119
+    prime_num = 91
     condition_check = num_check(prime_num)
     if (condition_check):
         A = random.randint(10, 100)
         # print(A)
+
         start = timeit.default_timer()
         bound = hasse_weil_bound(prime_num)
         l_bound, r_bound = bound
+        (print(l_bound, '<= E(F_P)<=', r_bound))
+
         points_list = Ec_Point_generator(A, prime_num, l_bound, r_bound)
-        point=points_list[0]
+        point = points_list[0]
         k = k_generator()
+
         if(divisor_using_multiplication(A,k, prime_num, point)):
             pass
         else:
             print("Cannot found any non-trivial divisor for the given prime integer")
         stop = timeit.default_timer()
-        (print(l_bound, '<= E(F_P)<=', r_bound))
         print('time elapsed', stop - start)
     else:
         print("composite integer is fully divided by the 2 or 3")

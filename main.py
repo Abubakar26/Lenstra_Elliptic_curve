@@ -20,7 +20,6 @@ def hasse_weil_bound(n: int) -> [int,int]:
 
 def weierstrass_B(a:int, x:tuple, y:tuple, n:int) -> int:
     b = ((y * y) - (x * x * x) - (a * x))
-    b = (b % n)
     return b
 
 

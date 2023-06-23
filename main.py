@@ -123,23 +123,28 @@ def divisor_using_addition(a:int, n:int, P:tuple, Q:tuple) -> int or tuple:
             return R
 
 
-def divisor_using_multiplication(a,k:int, n:int, point:list):
+def divisor_using_multiplication(a: int, k: int, n: int, point: list):
     k = bin(k)
     k = (k[2:])
     k = k[::-1]
     binary_points = []
+    P_R=[]
     kp = point
     for num, ones in enumerate(k):
         if int(ones) == 1:
             binary_points.append(num)
     for binary in binary_points:
+       count=0
        if(binary == 0):
            pass
        else:
+           while(count!=binary):
             R = divisor_using_addition(a, n, kp, kp)
+            P_R.append(R)
             if isinstance(R, int):
                 return R
             kp = R
+            count+=1
 
 # def lenstras_factorization(k, n, points) -> int:
 #     factors_list=[]
